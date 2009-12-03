@@ -32,7 +32,7 @@ that future lookups will provide the value from the db instead of the YAML file.
 
 * Install the plugin within your rails application
 
-  ./script/plugin install acts_as_settings
+  ./script/plugin install acts_as_setting
 
 * Create a model and db migration for the settings table
 
