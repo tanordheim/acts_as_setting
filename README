@@ -1,0 +1,99 @@
+ActsAsSetting
+=============
+
+== Overview
+
+This plugin provides a simple extension to any ActiveRecord class to implement
+a simple key/value settings interface.
+
+It supports a YAML file containing a
+definition of all the settings and their format/default values that will be
+used in case a requested setting is not found within the database.
+
+This plugin can for instance be used if you have an application that have a set
+of application wide settings that you want to allow the application
+administrator to change within a running application.
+
+Note that this is still a work in progress, there are no working unit tests and
+the code is generally not sufficiently tested for production use.
+
+== How does it work
+
+The plugin works by trying to look up the setting key using the find_by_key
+method in the ActiveRecord model its included in. If no record can be found, it
+will check the YAML config file ("config/settings.yml") to see if the settings
+key exist there, and if it does, provide the default setup for that setting
+as the result.
+
+When updating a setting value, the value will automaticly be stored to the db so
+that future lookups will provide the value from the db instead of the YAML file.
+
+== Installation
+
+* Install the plugin within your rails application
+
+  ./script/plugin install acts_as_settings
+
+* Create a model and db migration for the settings table
+
+  ./script/generate setting Setting
+  rake db:migrate
+
+* Alternatively you can use any existing class as your settings class by adding
+  the following to your model. Note that the model must have an existing "key"
+  and "value" property, these field names are not configurable.
+
+  acts_as_setting
+
+== Configuration
+
+The first thing you need to do is to create a "settings.yaml" file within your
+applications config/ directory. Here you have to add the setting keys you want
+your application to have. An example settings.yaml can for instance be:
+
+  language:
+    default: "en"
+    format: "string"
+    required: true
+
+  application_title:
+    default: "My Application"
+    format: "string"
+    required: true
+
+  application_sloagun:
+    default: ""
+    format: "string"
+    required: false
+
+  sender_email:
+    default: "noreply@myapp.com"
+    format: "email"
+    required: true
+
+The default values for a setting are:
+  format: "string"
+  required: "false"
+  default: nil
+
+Unless explicitly specified for a setting key, the above values will be used.
+
+== Example
+
+* To look up a setting value:
+
+  Setting.language
+
+* To write a new setting value:
+
+  Setting.language = "fr"
+
+== License
+
+This plugin is released under the MIT license.
+
+== Author
+
+Trond Arve Nordheim, <tanordheim@gmail.com>
+http://www.binarymarbles.com/
+
