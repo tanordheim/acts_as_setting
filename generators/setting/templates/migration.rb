@@ -1,4 +1,4 @@
-class CreateSettings < ActiveRecord::Migraiton
+class CreateSettings < ActiveRecord::Migration
 
   def self.up
 
